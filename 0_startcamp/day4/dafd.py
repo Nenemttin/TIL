@@ -19,4 +19,4 @@ def translate_lang():
         print(response_body.decode('utf-8'))
     else:
         print("Error Code:" + rescode)
-    return print(response_body.decode('utf-8'))
+    return 
