@@ -1,15 +1,47 @@
-{% extends 'board/base.html' %}
+{% extends 'board_ad/base.html' %}
 
 {% block body %}
-    <h1>{{ article.title }}</h1>
+    <h1>{{ posting.title }}</h1>
     <p>
-    {{ article.content }}
+        {{ posting.content }}
     </p>
     <hr>
-    <a href="/board/articles/"><button>List</button></a>
-    <a href="/board/articles/{{ article.id }}/edit/"><button>Edit</button></a>
-    <form action="/board/articles/{{ article.id }}/delete/" method="POST">
+    <a href="{% url 'board_ad:posting_list' %}"><button>List</button></a>
+    <a href="{% url 'board_ad:update_posting' posting.id %}"><button>Edit</button></a>
+    <form action="{% url 'board_ad:delete_posting' posting.id %}" method="POST">
         {% csrf_token %}
-        <button type="submit">Delete</button>
+        <button type="submit" onclick="return confirm('진짜 지울거야?');">Delete</button>
+    </form>
+
+    <button id="reset_button">WOW</button>
+    <script>
+        button = document.querySelector('#reset_button');
+        button.addEventListener('click', (e) => {
+            document.write('<h1>hahah</h1>');
+        });
+    </script>
+
+    <hr>
+    <section>
+        {% if comments %}
+            <ul>
+                {% for comment in comments %}
+                    <li>
+                        {{ comment.content }}
+                        <form action="{% url 'board_ad:delete_comment' posting.id comment.id %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit">댓글삭제</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </section>
+
+    <form action="{% url 'board_ad:create_comment' posting.id %}" method="POST">
+        {% csrf_token %}
+        <label for="comment">comment:</label>
+        <input type="text" name="comment" id="comment">
+        <button type="submit">댓글 쓰기</button>
     </form>
 {% endblock %}
