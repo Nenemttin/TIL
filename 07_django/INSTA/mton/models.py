@@ -43,7 +43,6 @@ class Student(models.Model):
 
 class Lecture(models.Model):
     title = models.CharField(max_length=100)
-    students = models.ManyToManyField(Student)
 
     def __str__(self):
         return f'{self.id}: {self.title}'
