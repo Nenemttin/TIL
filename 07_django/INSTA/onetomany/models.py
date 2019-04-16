@@ -27,3 +27,19 @@ class Book(TimeStamp):
 
 class Chapter(TitleDescriptionModel, TimeStampedModel):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
+
+
+class Student(models.Model):
+    name = models.CharField(max_length=20)
+
+
+class Message(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    content = models.CharField(max_length=30)
+
+
+class Reply(models.Model):
+    content = models.CharField(max_length=30)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    message = models.ForeignKey(Message, on_delete=models.CASCADE)
+
