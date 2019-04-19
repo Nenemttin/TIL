@@ -22,7 +22,7 @@
     {% endif %}
     <div class="card-body">
         <p class="card-text">{{ post.content }}</p>
-        <p class="d-flex justify-content-end">작성자 : {{ post.user.username }}</p>
+        <p class="d-flex justify-content-end">작성자 : <a href="{% url 'accounts:user_detail' post.user.username %}" class="text-dark">{{ post.user.username }}</a></p>
         {% if user == post.user %}
             <a href="{% url 'posts:update_post' post.id %}" class="btn btn-warning">수정</a>
         {% endif %}
@@ -34,15 +34,15 @@
         {% endif %}
         <form action="{% url 'posts:toggle_like' post.id %}" method="POST">
             {% csrf_token %}
-            <button type="submit">좋아요</button>
+            <button type="submit" class="btn btn-primary">좋아요</button>
         </form>
     </div>
 
     <div class="card-body">
-        {% for comment in post.comment_set.all %}
+        {% for comment in post.comment_set.all.reverse %}
             <p class="card-text">
 
-                <strong>{{ comment.user.username }}</strong> : {{ comment.content }}
+                <a href="{% url 'accounts:user_detail' comment.user.username %}" class="text-dark"><strong>{{ comment.user.username }}</strong></a> : {{ comment.content }}
             </p>
 
         {% empty %}

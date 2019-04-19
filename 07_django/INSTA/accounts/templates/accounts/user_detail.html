@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-4">
+            <img src="" alt="{{ user_info.username }}-profile-picture">
+        </div>
+        <div class="col-8">
+            <h1>{{ user_info.username }}</h1>
+            <div>
+                <h2>Followings</h2>
+                <p>{{ user_info.followings.all.count }}</p>
+                {% if user_info.followings.all %}
+                    <ul>
+                        {% for user in user_info.followings.all %}
+                            <li>{{ user.username }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                <h2>Followers</h2>
+                <p>{{ user_info.followers.all.count }}</p>
+                {% if user_info.followers.all %}
+                    <ul>
+                        {% for user in user_info.followers.all %}
+                            <li>{{ user.username }}</li>
+                        {% endfor %}
+
+                    </ul>
+                {% endif %}
+            </div>
+            <div>
+                {% if user != user_info %}
+                    {% if user_info in user.followings.all %}
+                        <form action="{% url 'accounts:toggle_follow' user_info.username %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">팔로우 끊기</button>
+                        </form>
+                    {% else %}
+                        <form action="{% url 'accounts:toggle_follow' user_info.username %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary" >팔로우 하기</button>
+                        </form>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="card-columns">
+        {% for user_post in user_posts %}
+            {% include 'posts/_post.html' with post=user_post %}
+        {% endfor %}
+
+    </div>
+{% endblock %}

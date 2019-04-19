@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
 from django.views.decorators.http import require_GET, require_POST, require_http_methods
 from django.contrib.auth.decorators import login_required
 from .models import Post, Image
@@ -26,9 +26,7 @@ def create_post(request):
                     image.post = post
                     image.save()
             return redirect('posts:post_list')
-        else:
-            # 실패하면, 다시 data 입력 form 을 준다.
-            pass
+
     # GET 방식으로 요청이 오면,
     else:
         # 새로운 Post 용 form 을 만든다.
@@ -86,7 +84,7 @@ def create_comment(request, post_id):
         comment.user = request.user
         comment.post = post
         comment.save()
-        return redirect('posts:post_list')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/insta/'))
     # TODO else: => What if comment is not valid?
 
 
