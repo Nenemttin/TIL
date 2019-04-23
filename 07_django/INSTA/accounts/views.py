@@ -3,9 +3,11 @@ from django.views.decorators.http import require_GET, require_http_methods, requ
 from .forms import *
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 # from django.contrib.auth import get_user_model
 from .models import User
 from posts.forms import CommentModelForm
+
 
 
 # Create your views here.
@@ -34,7 +36,10 @@ def log_in(request):
         form = CustomUserAuthenticationForm(request, data=request.POST)
         if form.is_valid():
             # Do login
+            user = form.get_user()
             login(request, form.get_user())
+            messages.add_message(request, messages.SUCCESS, f'Welcome back, {user.username}')
+            messages.add_message(request, messages.SUCCESS, f'Last login, {user.last_login}')
             return redirect(request.GET.get('next') or 'posts:post_list')
     # 사용자가 로그인 화면을 요청할 때
     else:
@@ -44,6 +49,7 @@ def log_in(request):
 
 def log_out(request):
     logout(request)
+    messages.add_message(request, messages.SUCCESS, '안녕히 가세요 :)')
     return redirect('posts:post_list')
 
 

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            background: black;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        /*
+            UpperCamelCase = PostModelForm 시작이 대문자 띄어쓰기 시점 대문자
+            lowerCamelCase = firstNameAndLastName 시작이 소문자 띄어쓰기 시점 대문자
+            snake_case = this_is_python_variable
+         */
+        const firstName = 'Happy';
+        const lastName = 'Hacking';
+        const fullName = firstName + lastName;
+        document.write('<h1>' + fullName + '!!' + '</h1>');
+        document.write(`<h1>${fullName}!!</h1>`); // Template String(Literal)
+        for (i = 1; i < 101; i++) {
+            if (i % 3 == 0) {
+                if (i % 5 == 0) {
+                    document.write(`<p>십오</p>`)
+                }
+                else {
+                    document.write(`<p>삼</p>`)
+                }
+            }
+            else if (i % 5 == 0) {
+                document.write(`<p>오</p>`)
+            }
+            else {
+                document.write(`<p>${i}</p>`)
+            }
+        }
+    </script>
+</body>
+</html>

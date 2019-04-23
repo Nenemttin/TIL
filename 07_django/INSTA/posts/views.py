@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
 from django.views.decorators.http import require_GET, require_POST, require_http_methods
 from django.contrib.auth.decorators import login_required
-from .models import Post, Image
+from django.contrib import messages
+from .models import Post, Image, HashTag
 from .forms import PostModelForm, ImageModelForm, CommentModelForm
 
 
@@ -18,6 +19,16 @@ def create_post(request):
             post = post_form.save(commit=False)
             post.user = request.user
             post.save()
+            # Create HashTag => <input name='tags'>
+            content = post_form.cleaned_data.get('content')
+            words = content.split(' ') # 띄어쓰기 기준으로 split
+            for word in words:
+                if word[0] == '#':
+                    word = word[1:]
+                    tag = HashTag.objects.get_or_create(content=word) # (HashTagobj, True or False)
+                    post.tags.add(tag[0])
+                    if tag[1]:
+                        messages.add_message(request, messages.SUCCESS, f'#{tag[0].content}태그를 처음으로 추가하셨어요! :)')
             for image in request.FILES.getlist('file'): # 여러 장의 사진은 리스트로 저장되어 들어온다.
                 request.FILES['file'] = image
                 image_form = ImageModelForm(files=request.FILES)
@@ -49,6 +60,15 @@ def update_post(request, post_id):
             post_form = PostModelForm(request.POST, instance=post)
             if post_form.is_valid():
                 post_form.save()
+                # update HashTag
+                post.tags.clear() # 기존 태그 다 날리기
+                content = post_form.cleaned_data.get('content')
+                words = content.split(' ')  # 띄어쓰기 기준으로 split
+                for word in words:
+                    if word[0] == '#':
+                        word = word[1:]
+                        tag = HashTag.objects.get_or_create(content=word)  # (HashTagobj, True or False)
+                        post.tags.add(tag[0])
                 return redirect('posts:post_list')
         else:
             post_form = PostModelForm(instance=post)
@@ -103,3 +123,9 @@ def toggle_like(request, post_id):
     return redirect('posts:post_list')
 
 
+@require_GET
+def tag_posts_list(request, tag_name):
+    tag = get_object_or_404(HashTag, content=tag_name)
+    posts = tag.posts.all()
+    comment_form = CommentModelForm()
+    return render(request, 'posts/list.html', {'posts': posts, 'comment_form': comment_form, 'h1': f'#{tag}를 포함한 posts 입니다.'})

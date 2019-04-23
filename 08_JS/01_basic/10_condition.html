@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            background: black;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        const userName = prompt('Hello!, Who are you?');
+        let message = ``;
+
+        if (userName === '1q2w3e4r') {
+            message = '<h1>This is secret Admin Page</h1>';
+        } else if (userName === 'Jun') {
+            message = '<h1>hello master</h1>';
+        } else {
+            message = `<h1>Hello ${userName}</h1>`;
+        }
+
+        document.write(message);
+
+        /*
+            num = 10
+
+            string = 'bigger than 5' if num > 5 else 'less than 5'
+
+         */
+
+        // Ternay Operator === 삼항 연산자
+        const num = 10;
+        let string = '';
+        if (num > 5) {
+            string = 'big';
+        } else {
+            string = 'small';
+        }
+
+        string = (num > 5) ? 'big' :  'small';
+
+    </script>
+</body>
+</html>
