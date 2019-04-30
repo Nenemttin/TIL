@@ -10,6 +10,7 @@ from posts.forms import CommentModelForm
 
 
 
+
 # Create your views here.
 @require_http_methods(['GET', 'POST'])
 def signup(request):
