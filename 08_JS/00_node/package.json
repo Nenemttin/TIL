@@ -1,0 +1,13 @@
+{
+  "name": "gwaldonenemttin",
+  "version": "0.0.1",
+  "description": "Learn Node",
+  "main": "main.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "PARK BYEONG JUN",
+  "license": "ISC"
+}

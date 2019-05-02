@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>caesarCipher</title>
+</head>
+<body>
+<div>
+    <label for="user-n">n</label>
+    <input type="text" id="user-n">
+</div>
+<div>
+    <label for="user-input">origin</label>
+    <input autofocus type="text" id="user-input">
+</div>
+
+
+<h1 id="user-output">
+
+</h1>
+<script>
+    const inputArea = document.querySelector('#user-input');
+    const resultArea = document.querySelector('#user-output');
+    const cipherArea = document.querySelector('#user-n');
+
+
+
+
+    inputArea.addEventListener('input', e => {
+        const words = [...(inputArea.value)];
+        const resultString = words.map(char => {return String.fromCharCode(char.charCodeAt() + Number(cipherArea.value))});
+
+        resultArea.innerHTML = resultString.join('');
+    })
+</script>
+</body>
+</html>
